@@ -1,13 +1,22 @@
 FROM amazonlinux:latest
 
-# .bashrcをローカルからコピー
-COPY ../os_setting/.bashrc /root/.bashrc
+# .bashrc作成
+RUN { echo '#!/bin/sh'; echo 'exec pkg-config "$@" freetype2'; } > /usr/local/bin/freetype-config && chmod +x /usr/local/bin/freetype-config
+RUN { \
+      echo 'if [ -f /etc/bashrc ]; then'; \
+      echo '    . /etc/bashrc'; \
+      echo 'fi'; \
+      echo ''; \
+      echo "alias ll='ls -al'"; \
+} > /root/.bashrc
 RUN source /root/.bashrc
 
 # タイムゾーンファイルの変更(即座に変わります)
 RUN ln -sf  /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
- && echo 'ZONE="Asia/Tokyo"' > /etc/sysconfig/clock \
- && echo 'UTC=false' >> /etc/sysconfig/clock \
+ && { \
+      echo 'ZONE="Asia/Tokyo"' \
+      echo 'UTC=false' \
+ } > /etc/sysconfig/clock \
  && echo "ap-northeast-1" > /etc/yum/vars/awsregion
 
 # 基本機能追加
