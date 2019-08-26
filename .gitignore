@@ -25,3 +25,9 @@ yarn-error.log
 .phpunit.result.cache
 *.log
 
+# 空ディレクトリを残す
+source/*
+./real_data/web/http/log/*
+./real_data/db/data/*
+!.gitkeep
+
