@@ -17,6 +17,7 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
       wget \
       sudo \
       httpd \
+      python3 \
 ######################################
 # リポジトリ追加
 ######################################
@@ -56,12 +57,20 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
 # composer追加
 ######################################
  && curl -sS https://getcomposer.org/installer | php \
- && mv composer.phar /usr/local/bin/composer
-
+ && mv composer.phar /usr/local/bin/composer \
+######################################
+# AWS Client追加
+######################################
+# yum python3でpip3も入るので個別にpip3は入れなくても大丈夫
+ && pip3 install awscli --upgrade
 ######################################
 # 環境変数
 ######################################
-ENV TZ='Asia/Tokyo'
+ENV AWS_ACCESS_KEY_ID=${SET_AWS_ACCESS_KEY} \
+    AWS_SECRET_ACCESS_KEY=${SET_AWS_SECRET_ACCESS_KEY} \
+    AWS_DEFAULT_REGION=${SET_AWS_DEFAULT_REGION} \
+    AWS_DEFAULT_OUTPUT_FORMAT=${SET_AWS_DEFAULT_OUTPUT_FORMAT} \
+    TZ=${SET_TIME_ZONE}
 
 ######################################
 # 各ファイルをローカルからコピー
@@ -71,9 +80,16 @@ COPY ./docker/apache/httpd.conf /etc/httpd/conf/httpd.conf
 COPY ./docker/app/php.ini /etc/php.ini
 
 ######################################
+# ユーザー作成 (&&を仕様して連続で実行できなかったのでそれぞれRUNで呼んでます)
+######################################
+ARG SET_USER
+RUN useradd -m ${SET_USER}
+RUN echo "${SET_USER}    ALL=(ALL)       ALL" >> /etc/sudoers
+
+######################################
 # working directory
 ######################################
-WORKDIR /var/www/html
+WORKDIR /tmp
 
 ######################################
 # port指定

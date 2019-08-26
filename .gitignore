@@ -1,0 +1,27 @@
+# git管理除外設定
+
+# macのシステム情報ファイル
+.DS_Store
+
+# .envファイルは除外
+.env
+.env.*
+
+#
+/node_modules
+/public/hot
+/public/storage
+/public/data
+/storage/*.key
+/vendor
+/.idea
+/.vscode
+/nbproject
+/.vagrant
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+.phpunit.result.cache
+*.log
+
