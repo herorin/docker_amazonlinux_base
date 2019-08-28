@@ -17,6 +17,8 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
       wget \
       sudo \
       httpd \
+#      openssl \
+#      mod_ssl \
       python3 \
 ######################################
 # リポジトリ追加
@@ -41,6 +43,7 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
 ######################################
  && yum install -y \
       php \
+      php-opcache \
       php-devel \
       php-mbstring \
       php-pdo \
@@ -50,8 +53,15 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
       php-zip \
       php-json \
       php-mysqlnd \
+      php-pear \
       mysql-community-client \
       mysql-community-devel \
+      ImageMagick7 \
+      ImageMagick7-devel \
+      php72-php-pear \
+      php72-php-devel \
+      php72-php-pecl-imagick \
+      php72-php-pecl-imagick-devel \
  && yum clean all \
 ######################################
 # composer追加
@@ -78,6 +88,7 @@ ENV AWS_ACCESS_KEY_ID=${SET_AWS_ACCESS_KEY} \
 COPY ./docker/os_setting/root.bashrc /root/.bashrc
 COPY ./docker/apache/httpd.conf /etc/httpd/conf/httpd.conf
 COPY ./docker/app/php.ini /etc/php.ini
+COPY ./docker/app/php72.imagick.ini /etc/php.d/imagick.ini
 
 ######################################
 # ユーザー作成 (&&を仕様して連続で実行できなかったのでそれぞれRUNで呼んでます)
