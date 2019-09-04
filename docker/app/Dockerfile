@@ -17,8 +17,8 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
       wget \
       sudo \
       httpd \
-#      openssl \
-#      mod_ssl \
+      openssl \
+      mod_ssl \
       python3 \
 ######################################
 # リポジトリ追加
@@ -76,26 +76,32 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
 ######################################
 # 環境変数
 ######################################
-ENV AWS_ACCESS_KEY_ID=${SET_AWS_ACCESS_KEY} \
-    AWS_SECRET_ACCESS_KEY=${SET_AWS_SECRET_ACCESS_KEY} \
-    AWS_DEFAULT_REGION=${SET_AWS_DEFAULT_REGION} \
-    AWS_DEFAULT_OUTPUT_FORMAT=${SET_AWS_DEFAULT_OUTPUT_FORMAT} \
-    TZ=${SET_TIME_ZONE}
+#ENV AWS_ACCESS_KEY_ID=${SET_AWS_ACCESS_KEY} \
+#    AWS_SECRET_ACCESS_KEY=${SET_AWS_SECRET_ACCESS_KEY} \
+#    AWS_DEFAULT_REGION=${SET_AWS_DEFAULT_REGION} \
+#    AWS_DEFAULT_OUTPUT_FORMAT=${SET_AWS_DEFAULT_OUTPUT_FORMAT} \
+#    TZ=${SET_TIME_ZONE}
 
 ######################################
 # 各ファイルをローカルからコピー
 ######################################
 COPY ./docker/os_setting/root.bashrc /root/.bashrc
-COPY ./docker/apache/httpd.conf /etc/httpd/conf/httpd.conf
+#COPY ./docker/apache/httpd.conf /etc/httpd/conf/httpd.conf
+COPY ./docker/apache/smx.local+1.pem /etc/pki/tls/certs/smx.local+1.pem
+COPY ./docker/apache/smx.local+1-key.pem /etc/pki/tls/private/smx.local+1-key.pem
 COPY ./docker/app/php.ini /etc/php.ini
 COPY ./docker/app/php72.imagick.ini /etc/php.d/imagick.ini
+COPY ./docker/apache/ssl.conf /etc/httpd/conf.d/ssl.conf
+COPY ./docker/apache/vhost__default.conf /etc/httpd/conf.d/vhost__default.conf
+COPY ./docker/apache/vhost_stone.conf /etc/httpd/conf.d/vhost_stone.conf
 
 ######################################
 # ユーザー作成 (&&を仕様して連続で実行できなかったのでそれぞれRUNで呼んでます)
 ######################################
 ARG SET_USER
-RUN useradd -m ${SET_USER}
-RUN echo "${SET_USER}    ALL=(ALL)       ALL" >> /etc/sudoers
+RUN useradd -m ${SET_USER} && \
+    echo "${SET_USER}:${SET_USER}" | chpasswd && \
+    echo "${SET_USER} ALL=(ALL) ALL" >> /etc/sudoers
 
 ######################################
 # working directory
