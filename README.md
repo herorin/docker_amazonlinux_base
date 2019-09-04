@@ -55,8 +55,12 @@ ls -al $JAVA_HOME/bin/keytool  # keytoolを使用するらしい
 
 ```shell
 cd /tmp    # 一応tmpで作業
-mkcert smx.local "*.smx.local"
+
+mkcert -install    # ローカル証明書登録
+mkcert smx.local "*.smx.local"    # ドメインの鍵作成
 ```
+
+- もう一度鍵を再作成したい場合は、`mkcert -uninstall`して`mkcert -install`からやり直して下さい
 
 ```shell
 ls -al /tmp/*.pem
