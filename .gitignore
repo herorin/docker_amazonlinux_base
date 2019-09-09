@@ -25,6 +25,8 @@ yarn-error.log
 .phpunit.result.cache
 *.log
 *_log
+my.cnf.*
+docker-compose.yml.*
 
 # 空ディレクトリを残す
 source/*

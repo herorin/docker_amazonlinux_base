@@ -62,6 +62,9 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
       php72-php-devel \
       php72-php-pecl-imagick \
       php72-php-pecl-imagick-devel \
+      openjpeg2 \
+      openjpeg2-devel \
+      openjpeg2-tools \
  && yum clean all \
 ######################################
 # composer追加
