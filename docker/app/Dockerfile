@@ -60,6 +60,7 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
       ImageMagick7-devel \
       php72-php-pear \
       php72-php-devel \
+      php72-php-bcmath \
       php72-php-pecl-imagick \
       php72-php-pecl-imagick-devel \
       openjpeg2 \
