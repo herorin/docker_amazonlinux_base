@@ -54,6 +54,7 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
       php-json \
       php-mysqlnd \
       php-pear \
+      php-bcmath \
       mysql-community-client \
       mysql-community-devel \
       ImageMagick7 \
