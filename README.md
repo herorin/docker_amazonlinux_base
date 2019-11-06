@@ -77,4 +77,65 @@ mv /tmp/*.pem (このリポジトリをクローンした場所)/docker_amazonli
 
 - ローカルでの作業を以上になります
 
-（これから追記予定）
+### docker-compose起動
+
+#### dockerを起動する前準備
+
+```shell
+git clone git@gitlab.skymatix.jp:SkymatiX/docker_amazonlinux_base.git
+cd docker_amazonlinux_base
+```
+
+##### 個別情報設定
+
+```shell
+vi .env
+```
+
+- SET_USER : webサーバのユーザー ユーザー名がパスワードになります
+- SET_AWS_***** : aws cliの設定です
+
+###### mkcert実行で個別にドメインを作成した場合の対応
+
+- `smx.local "*.smx.local"` とは違うドメインを作成した場合下記の対応が必要になります
+    1. docker/apache/下にあるpemファイルを差し替えて下さい
+    2. docker/apache/vhost__default.conf内にあるpemファイル名も変更して下さい
+
+#### dockerコンテナ作成
+
+```shell
+docker-compose up -d
+
+# 下記コマンドで、dev_db_1, dev_web_1のStateが正常であれば成功です
+docker-compose ps
+```
+
+#### dockerコンテナに入る方法
+
+- webサーバのコンテナ名 : web
+- dbサーバのコンテナ名 : db
+
+```shell
+# webサーバ
+docker-compose exec web bash
+
+# webサーバにユーザーで入りたい場合
+docker-compose exec -u {SET_USERで設定したユーザー名} web bash
+
+# dbサーバ
+docker-compose exec db bash
+```
+
+- 抜ける場合は、`exit` で抜けられます
+
+#### 各アプリの配置
+
+```shell
+cd server/skymatix
+
+# 各プロジェクトをクローンする
+# 例). stoneプロジェクトであれば
+git clone git@gitlab.skymatix.jp:SkymatiX/stone.git
+```
+
+- stoneシステムの起動方法は、stoneプロジェクトのreadme参照
