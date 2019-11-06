@@ -28,6 +28,8 @@ yarn-error.log
 *_log
 my.cnf.*
 docker-compose.yml.*
+package-lock.json
+yarn.lock
 
 # 空ディレクトリを残す
 source/*

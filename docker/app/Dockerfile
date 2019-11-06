@@ -21,6 +21,11 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
       mod_ssl \
       python3 \
 ######################################
+# npm, node, yarnリポジトリダウンロード
+######################################
+ && curl -sL https://rpm.nodesource.com/setup_12.x | bash - \
+ && curl -sL -o /etc/yum.repos.d/yarn.repo https://dl.yarnpkg.com/rpm/yarn.repo \
+######################################
 # リポジトリ追加
 ######################################
  && yum install -y \
@@ -67,6 +72,8 @@ RUN echo 'ap-northeast-1' > /etc/yum/vars/awsregion \
       openjpeg2 \
       openjpeg2-devel \
       openjpeg2-tools \
+      nodejs \
+      yarn \
  && yum clean all \
 ######################################
 # composer追加
